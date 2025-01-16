@@ -54,9 +54,9 @@ productform.addEventListener('submit', (e) => {
     message.style.color = "green";
 });
 
-function displayProducts() {
+function displayProducts(filteredProducts = products) {
     productList.innerHTML = '';
-    products.forEach(product => {
+    filteredProducts.forEach(product => {
         const productItem = document.createElement('div');
         productItem.classList.add('product-item');
         productItem.innerHTML = `
@@ -65,11 +65,12 @@ function displayProducts() {
                 <h3>${product.name}</h3>
                 <p>${product.description}</p>
                 <p>$${product.price}</p>
+                <p>Rating: ${product.rating || "Not Rated"}</p> <!-- Display current rating -->
                 <button onclick="editProduct(${product.id})">Edit</button>
                 <button onclick="openDeleteModal(${product.id})">Delete</button>
                 <div class="product-rating">
-                    <label for="rating">Rate this product:</label>
-                    <input type="number" id="rating" min="1" max="5" step="1" />
+                    <label for="rating-${product.id}">Rate this product:</label>
+                    <input type="number" id="rating-${product.id}" min="1" max="5" step="1" />
                     <button onclick="submitRating(${product.id})">Submit Rating</button>
                 </div>
             </div>
@@ -77,6 +78,7 @@ function displayProducts() {
         productList.appendChild(productItem);
     });
 }
+
 
 // Cancel Delete
 document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
@@ -193,17 +195,21 @@ function deleteProduct(id) {
     displayProducts();
 }
 
-// Add rating feature to product
 function submitRating(productId) {
-    const rating = document.getElementById('rating').value;
-    const product = products.find(p => p.id === productId);
-    if(product && rating >=1 && rating <=5){
-        product.rating = rating;
-        displayProducts();
+    const ratingInput = document.getElementById(`rating-${productId}`);
+    const rating = parseInt(ratingInput.value);
+
+    if (rating >= 1 && rating <= 5) {
+        const product = products.find(p => p.id === productId);
+        if (product) {
+            product.rating = rating; // Update the product's rating
+            displayProducts(); // Re-render the product list to show the updated rating
+        }
     } else {
         alert("Invalid rating value. Please enter a rating between 1 and 5.");
     }
 }
+
 
 // Search functionality for product name or description
 const searchInput = document.getElementById('searchInput');

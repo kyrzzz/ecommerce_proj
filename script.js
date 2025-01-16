@@ -68,6 +68,11 @@ function displayProducts() {
                 <p>$${product.price}</p>
                 <button onclick="editProduct(${product.id})">Edit</button>
                 <button onclick="deleteProduct(${product.id})">Delete</button>
+                <div class="product-rating">
+                    <label for="rating">Rate this product:</label>
+                    <input type="number" id="rating" min="1" max="5" step="1" />
+                    <button onclick="submitRating(product.id)">Submit Rating</button>
+                </div>
             </div>
             `;
             productList.appendChild(productItem);
@@ -202,6 +207,11 @@ function displayFilteredProducts(filteredProducts) {
                 <p>$${product.price}</p>
                 <button onclick="editProduct(${product.id})">Edit</button>
                 <button onclick="deleteProduct(${product.id})">Delete</button>
+                <div class="product-rating">
+                    <label for="rating">Rate this product:</label>
+                    <input type="number" id="rating" min="1" max="5" step="1" />
+                    <button onclick="submitRating(product.id)">Submit Rating</button>
+                </div>
             </div>
         `;
         productList.appendChild(productItem);

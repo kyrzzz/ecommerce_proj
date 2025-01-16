@@ -147,3 +147,35 @@ productImage.addEventListener('change', (e) => {
         reader.readAsDataURL(file);
     }
 });
+
+// Search functionality for product name or description
+const searchInput = document.getElementById('searchInput');
+
+searchInput.addEventListener('input', (e) => {
+    const searcchTerm = e.target.value.toLowerCase();
+    const filteredProducts = products.filter(product =>
+        product.name.toLowerCase().includes(searchTerm) ||
+        product.description.toLowerCase().includes(searchTerm)
+    );
+    displayFilteredProducts(filteredProducts);
+});
+
+// Display filtered products
+function displayFilteredProducts(filteredProducts) {
+    productList.innerHTML = '';
+    filteredProducts.forEach(product => {
+        const productItem = document.createElement('div');
+        productItem.classList.add('product-item');
+        productItem.innerHTML = `
+            <img src="${product.image}" alt="${product.name}">
+            <div class="product-info">
+                <h3>${product.name}</h3>
+                <p>${product.description}</p>
+                <p>$${product.price}</p>
+                <button onclick="editProduct(${product.id})">Edit</button>
+                <button onclick="deleteProduct(${product.id})">Delete</button>
+            </div>
+        `;
+        productList.appendChild(productItem);
+    });
+}

@@ -147,3 +147,32 @@ productImage.addEventListener('change', (e) => {
         reader.readAsDataURL(file);
     }
 });
+
+//delete confirmation logic
+let productToDelete = null; //store the product to be deleted
+
+//open the modal and confirm delete
+function openDeleteModal(id) {
+    productToDelete = id;
+    document.getElementById('confirmationModal').style.display ='flex';
+}
+
+//close the modal
+document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
+    document.getElementById('confirmationModal').style.display = 'none';
+});
+
+//confirm delete action
+document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+    deleteProduct(productToDelete);
+    document.getElementById('confirmationModal').style.display = 'none';
+});
+
+function deleteProduct(id) {
+    products = products.filter(p => p.id !== id);
+    displayProducts();
+}
+
+
+
+//product rating feature

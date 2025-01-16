@@ -114,3 +114,35 @@ button:hover {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.product-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.product-item .product-info {
+    margin-top: 1rem;
+}
+
+.product-item button {
+    background-color: #e74c3c;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+.product-item button:hover {
+    background-color: #c0392b;
+}
+
+@media (max-width: 600px) {
+    main {
+        flex-direction: column;
+    }
+
+    .upload-form, .product-display {
+        width: 100%;
+    }
+}

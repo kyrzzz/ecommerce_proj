@@ -105,3 +105,13 @@ function clearForm() {
     productImage.value = "";
     imagePreview.style.display = 'none';
 }
+
+document.getElementById('sortNameBtn').addEventListener('click', () => {
+    products.sort((a, b) => a.name.localeCompare(b.name));
+    displayProducts();
+});
+
+document.getElementById('sortPriceBtn').addEventListener('click', () => {
+    products.sort((a, b) => a.price - b.price);
+    displayProducts();
+});

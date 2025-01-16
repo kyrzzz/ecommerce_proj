@@ -29,7 +29,7 @@ productImage.addEventListener('change', () => {
 productform.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const name = productName.ariaValueMax.trim();
+    const name = productName.value.trim();
     const description = productDescription.value.trim();
     const price = parseFloat(productPrice.value.trim());
 

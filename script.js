@@ -54,7 +54,6 @@ productform.addEventListener('submit', (e) => {
     message.style.color = "green";
 });
 
-// Display products
 function displayProducts() {
     productList.innerHTML = '';
     products.forEach(product => {
@@ -62,22 +61,38 @@ function displayProducts() {
         productItem.classList.add('product-item');
         productItem.innerHTML = `
             <img src="${product.image}" alt="${product.name}">
-            <div class = "product-info">
+            <div class="product-info">
                 <h3>${product.name}</h3>
                 <p>${product.description}</p>
                 <p>$${product.price}</p>
                 <button onclick="editProduct(${product.id})">Edit</button>
-                <button onclick="deleteProduct(${product.id})">Delete</button>
+                <button onclick="openDeleteModal(${product.id})">Delete</button>
                 <div class="product-rating">
                     <label for="rating">Rate this product:</label>
                     <input type="number" id="rating" min="1" max="5" step="1" />
-                    <button onclick="submitRating(product.id)">Submit Rating</button>
+                    <button onclick="submitRating(${product.id})">Submit Rating</button>
                 </div>
             </div>
-            `;
-            productList.appendChild(productItem);
+        `;
+        productList.appendChild(productItem);
     });
 }
+
+// Cancel Delete
+document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
+    document.getElementById('confirmationModal').style.display = 'none';
+    productToDelete = null; // Reset the product to delete
+});
+
+// Confirm Delete
+document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+    if (productToDelete !== null) {
+        deleteProduct(productToDelete);
+        document.getElementById('confirmationModal').style.display = 'none';
+        productToDelete = null; // Reset the product to delete
+    }
+});
+
 
 // Edit product
 function editProduct(id) {
@@ -121,49 +136,37 @@ document.getElementById('sortPriceBtn').addEventListener('click', () => {
     products.sort((a, b) => a.price - b.price);
     displayProducts();
 });
+
 // File validation for image uploads (check file type and size)
 productImage.addEventListener('change', (e) => {
     const file = e.target.files[0];
     const fileType = file ? file.type.split('/')[1] : '';
-    const fileSize = file ? file.size / 1024 / 1024 : 0; // MB
+    const fileSize = file ? file.size / 1024 /1024 : 0; // MB
 
-    if (file) {
-        if (!['jpg', 'jpeg', 'png'].includes(fileType)) {
+    if(file) {
+        if(!['jpg','jpeg','png'].includes(fileType)){
             message.textContent = "Invalid file type! Please upload a JPG, JPEG, or PNG file.";
             message.style.color = "red";
-
-            // Reset file input
-            resetFileInput(productImage);
+            productImage.value = ''; // Reset file input
             return;
         }
 
-        if (fileSize > 5) { // Limit to 5MB
+        if(fileSize>5){ // Limit to 5MB
             message.textContent = "File size exceeds 5MB! Please upload a smaller file.";
             message.style.color = "red";
-
-            // Reset file input
-            resetFileInput(productImage);
+            productImage.value =''; // Reset file input
             return;
         }
 
         // Display image preview if file is valid
         const reader = new FileReader();
-        reader.onload = function () {
-            imagePreview.innerHTML = `<img src="${reader.result}" alt="Product Image Preview">`;
+        reader.onload = function(){
+            imagePreview.innerHTML = `<img src="${reader.result}" alt ="Product Image Preview">`;
             imagePreview.style.display = 'block';
         };
         reader.readAsDataURL(file);
     }
 });
-
-// Helper function to reset the file input
-function resetFileInput(inputElement) {
-    const newInput = inputElement.cloneNode(true); // Clone the input element
-    inputElement.replaceWith(newInput); // Replace the old input with the new one
-    // Reattach the event listener to the new input
-    newInput.addEventListener('change', inputElement._eventListener);
-    inputElement._eventListener = null;
-}
 
 //delete confirmation logic
 let productToDelete = null; //store the product to be deleted

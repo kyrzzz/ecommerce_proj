@@ -173,9 +173,18 @@ function deleteProduct(id) {
     displayProducts();
 }
 
+// Add rating feature to product
+function submitRating(productId) {
+    const rating = document.getElementById('rating').value;
+    const product = products.find(p => p.id === productId);
+    if(product && rating >=1 && rating <=5){
+        product.rating = rating;
+        displayProducts();
+    } else {
+        alert("Invalid rating value. Please enter a rating between 1 and 5.");
+    }
+}
 
-
-//product rating feature
 // Search functionality for product name or description
 const searchInput = document.getElementById('searchInput');
 

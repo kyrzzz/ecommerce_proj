@@ -39,5 +39,69 @@ productform.addEventListener('submit', (e) => {
         return;
     }
 
-    
-})
+    const newProduct = {
+        id: Date.now(),
+        name,
+        description,
+        price,
+        image: imagePreview.querySelector('img').src
+    };
+
+    products.push(newProduct);
+    displayProducts();
+    clearForm();
+    message.textContent = "Product uploaded successfully!";
+    message.style.color = "green";
+});
+
+// Display products
+function displayProducts() {
+    productList.innerHTML = '';
+    products.forEach(product => {
+        const productItem = document.createElement('div');
+        productItem.classList.add('product-item');
+        productItem.innerHTML = `
+            <img src="${product.image}" alt="${product.name}">
+            <div class = "product-info">
+                <h3>${product.name}</h3>
+                <p>${product.description}</p>
+                <p>$${product.price}</p>
+                <button onclick="editProduct(${product.id})">Edit</button>
+                <button onclick="deleteProduct(${product.id})">Delete</button>
+            </div>
+            `;
+            productList.appendChild(productItem);
+    });
+}
+
+// Edit product
+function editProduct(id) {
+    const product = products.find(p => p.id === id);
+    if(product) {
+        productName.value = product.name;
+        productDescription.value = product.description;
+        productPrice.value = product.price;
+        const previewImage = document.querySelector('.image-preview img');
+        previewImage ? previewImage.src = product.image : null;
+        productImage.files = new DataTransfer().files;
+        message.textContent = "Edit the product and resubmit.";
+        message.style.color = "blue";
+        products = products.filter(p => p.id !== id); // Remove the product temporarily for re-upload
+        displayProducts();
+    }
+}
+
+// Delete product
+function deleteProduct(id) {
+    products = products.filter(p => p.id !== id);
+    displayProducts();
+}
+
+// Clear the form after submission
+function clearForm() {
+    productName.value = "";
+    productDescription.value = "";
+    productPrice.value = "";
+    productImage.value = "";
+    imagePreview.style.display = 'none';
+}

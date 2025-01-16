@@ -209,7 +209,7 @@ function submitRating(productId) {
 const searchInput = document.getElementById('searchInput');
 
 searchInput.addEventListener('input', (e) => {
-    const searcchTerm = e.target.value.toLowerCase();
+    const searchTerm = e.target.value.toLowerCase();
     const filteredProducts = products.filter(product =>
         product.name.toLowerCase().includes(searchTerm) ||
         product.description.toLowerCase().includes(searchTerm)

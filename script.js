@@ -12,38 +12,6 @@ const productList = document.getElementById('productList');
 // store uploaded products
 let products = [];
 
-// File validation for image uploads (check file type and size)
-productImage.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    const fileType = file ? file.type.split('/')[1] : '';
-    const fileSize = file ? file.size / 1024 / 1024 : 0; // MB
-
-    if(file) {
-        if(!['jpg','jpeg','png'].includes(fileType)){
-            message.textContent = "Invalid file type! Please upload a JPG, JPEG, or PNG file.";
-            message.style.color = "red";
-            productImage.value = ''; // Reset file input
-            return;
-        }
-
-        if(fileSize>5){ // Limit to 5MB
-            message.textContent = "File size exceeds 5MB! Please upload a smaller file.";
-            message.style.color = "red";
-            productImage.value =''; // Reset file input
-            return;
-        }
-
-        // Display image preview if file is valid
-        const reader = new FileReader();
-        reader.onload = function(){
-            imagePreview.innerHTML = `<img src="${reader.result}" alt ="Product Image Preview">`;
-            imagePreview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-    }
-});
-
-/*
 // Show image preview
 productImage.addEventListener('change', () => {
     const file = productImage.files[0];
@@ -56,7 +24,6 @@ productImage.addEventListener('change', () => {
         reader.readAsDataURL(file);
     }
 });
-*/
 
 // Validate and submit form
 productform.addEventListener('submit', (e) => {
@@ -155,6 +122,36 @@ document.getElementById('sortPriceBtn').addEventListener('click', () => {
     displayProducts();
 });
 
+// File validation for image uploads (check file type and size)
+productImage.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    const fileType = file ? file.type.split('/')[1] : '';
+    const fileSize = file ? file.size / 1024 /1024 : 0; // MB
+
+    if(file) {
+        if(!['jpg','jpeg','png'].includes(fileType)){
+            message.textContent = "Invalid file type! Please upload a JPG, JPEG, or PNG file.";
+            message.style.color = "red";
+            productImage.value = ''; // Reset file input
+            return;
+        }
+
+        if(fileSize>5){ // Limit to 5MB
+            message.textContent = "File size exceeds 5MB! Please upload a smaller file.";
+            message.style.color = "red";
+            productImage.value =''; // Reset file input
+            return;
+        }
+
+        // Display image preview if file is valid
+        const reader = new FileReader();
+        reader.onload = function(){
+            imagePreview.innerHTML = `<img src="${reader.result}" alt ="Product Image Preview">`;
+            imagePreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+});
 
 //delete confirmation logic
 let productToDelete = null; //store the product to be deleted
